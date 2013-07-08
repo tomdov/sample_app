@@ -19,9 +19,11 @@ group :assets do
 end
 
 group :development do
+	gem 'webrat'
 	gem 'rspec-rails','2.14.0'
 end
 
 group :test do
+	gem 'webrat'
 	gem 'rspec', '2.14.0'
 end
