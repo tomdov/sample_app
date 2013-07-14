@@ -23,6 +23,7 @@ end
 group :development do
 	gem 'webrat'
 	gem 'rspec-rails','2.14.0'
+ 	gem 'annotate'
 end
 
 group :test do
