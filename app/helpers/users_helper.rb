@@ -8,4 +8,12 @@ module UsersHelper
                                             :class => 'gravatar',
                                             :gravatar => options)
   end
+
+  def update_user_attrs(user, name, email, pass, pass_conf)
+    user.name = name
+    user.email = email
+    user.password = pass
+    user.password_confirmation = pass_conf
+    return user
+  end
 end

@@ -110,7 +110,91 @@ describe UsersController do
     end
   end
 
+  describe 'GET "Edit"' do
 
+    before(:each) do
+      @user = FactoryGirl.create(:user)
+      test_sign_in(@user)
+    end
 
+    it 'should be successful' do
+      get :edit, :id => @user
+      response.should be_success
+    end
 
+    it 'should have the right title' do
+      get :edit, :id => @user
+      response.should have_selector('title', :content => "Edit user")
+    end
+
+    it 'should have a link to change the Gravatar' do
+      get :edit, :id => @user
+      response.should have_selector('a', :href => 'http://gravatar.com/emails',
+                                          :content => 'change')
+    end
+
+  end
+
+  describe 'PUT "Update"' do
+    before(:each) do
+      @user = FactoryGirl.create(:user)
+      test_sign_in(@user)
+      @new_password = "12345"
+    end
+
+    describe 'success' do
+
+      before(:each) do
+        @attr = {:name => 'new-ser',
+                 :email => 'new@example.com',
+                 :password => '12345',
+                 :password_confirmation => '12345'}
+      end
+
+      it 'should display success message' do
+        put :update, :user => @attr, :id => @user
+        flash[:success].should =~ /User saved successfuly/i
+      end
+
+      it 'should render the "show" template' do
+        put :update, :user => @attr, :id => @user
+        @user.reload
+        response.should redirect_to(@user)
+      end
+
+      it 'should update the user' do
+        put :update, :user => @attr, :id => @user
+        user = assigns(:user)
+        @user.reload
+        user.name.should == @user.name
+        user.email.should == @user.email
+        @user.has_password?(user.password)
+      end
+
+    end
+
+    describe 'failure' do
+
+      before(:each) do
+        @attr = {:name => '',
+                 :email => '',
+                 :password => '',
+                 :password_confirmation => ''}
+      end
+      it 'should display error message' do
+        put :update, :user => @attr, :id => @user
+        flash[:error].should =~ /Error in user saving/i
+      end
+
+      it 'should render the \'edit\' page' do
+        put :update, :user => @attr, :id => @user
+        response.should render_template('edit')
+      end
+
+      it 'should have the right title' do
+        put :update, :user => @attr, :id => @user
+        response.should have_selector('title', content: "Edit user")
+      end
+    end
+  end
 end

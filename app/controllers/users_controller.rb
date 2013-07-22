@@ -22,5 +22,26 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+    @user = User.find_by_id(params[:id])
+    @title = "Edit user"
+  end
+
+  def update
+    @user = User.find_by_id(params[:id])
+    if @user.update_attributes(params[:user])
+      flash[:success] = "User saved successfuly"
+      redirect_to @user # possible user_path(@user) also
+    else
+      flash[:error] = "Error in user saving"
+      @title = "Edit user"
+      render 'edit'
+    end
+
+
+  end
+
+
+
 
 end
