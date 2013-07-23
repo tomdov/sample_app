@@ -7,6 +7,7 @@ gem 'rails', '3.2.6'
 
 gem 'pg'
 gem 'gravatar_image_tag'
+gem 'will_paginate'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -24,6 +25,7 @@ group :development do
 	gem 'webrat'
 	gem 'rspec-rails','2.14.0'
  	gem 'annotate'
+  gem 'faker'
 end
 
 group :test do
