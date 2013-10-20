@@ -9,11 +9,12 @@
 #  updated_at         :datetime         not null
 #  encrypted_password :string(255)
 #  salt               :string(255)
+#  admin              :boolean          default(FALSE)
 #
 
 class User < ActiveRecord::Base
   attr_accessor :password
-  attr_accessible :email, :name,  :password, :password_confirmation
+  attr_accessible :email, :name,  :password, :password_confirmation, :admin
   email_regex = /\A[\w\+\-.]+@([\da-zA-Z\-.])*[\.]([a-zA-Z\..])+\z/i
 
   validates :name,  :presence => true,

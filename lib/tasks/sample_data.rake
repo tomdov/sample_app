@@ -9,10 +9,11 @@ namespace :db do
       name = Faker::Name.name
       email = "example-#{n+1}@railstitorial.org"
       password = "password"
-      User.create!(:name =>  name,
+      user = User.create!(:name =>  name,
                    :email => email,
                    :password => password,
                    :password_confirmation => password)
+      user.toggle!(:admin) if n == 0
     end
   end
 
