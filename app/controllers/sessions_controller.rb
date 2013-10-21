@@ -15,7 +15,6 @@ class SessionsController < ApplicationController
       redirect_back_or (user_path(user)) #  handle success case
     end
 
-
   end
 
   def destroy
