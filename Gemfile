@@ -19,7 +19,8 @@ group :assets do
   gem 'coffee-rails'
   gem 'uglifier', '>= 1.0.3'
   gem "jquery-rails"
-
+  gem "faker"
+  ruby "1.9.3"
 end
 
 group :development do
@@ -29,7 +30,6 @@ group :development do
     	gem 'autotest-growl'
     	gem 'autotest-fsevent'
  	gem 'annotate'
-	gem 'faker'
 end
 
 group :test do
