@@ -53,14 +53,52 @@ describe MicropostsController do
 
       end
 
-      it "should redirect to the user path" do
+      it "should redirect to the user root" do
         post :create, :micropost => @attr
-        response.should redirect_to(user_path(current_user))
+        response.should redirect_to(root_path)
       end
 
       it "should show flash message" do
         post :create, :micropost => @attr
         flash[:success].should =~ /Micropost saved/i
+      end
+    end
+  end
+
+  describe "delete 'destroy'" do
+
+    describe "unauthorized user" do
+      before(:each) do
+        @wrong_user = test_sign_in(FactoryGirl.create(:user))
+        @user = FactoryGirl.create(:user, :email =>  FactoryGirl.generate(:email))
+        @mp1  = FactoryGirl.create(:micropost, :user => @user, :created_at => 1.day.ago)
+      end
+
+      it "should deny delete" do
+        lambda do
+          delete :destroy, :id => @mp1
+        end.should_not change(Micropost, :count)
+      end
+
+      it "should deny access" do
+        delete :destroy, :id => @mp1
+        response.should redirect_to root_path
+      end
+
+    end
+
+    describe "authorized user" do
+      before(:each) do
+        @user = (FactoryGirl.create(:user))
+        @mp1  = FactoryGirl.create(:micropost, :user => @user, :created_at => 1.day.ago)
+        test_sign_in(@user)
+      end
+
+      it "should delete the micropost" do
+        lambda do
+          delete :destroy, :id => @mp1
+          response.should redirect_to root_path
+        end.should change(Micropost, :count).by(-1)
       end
     end
   end

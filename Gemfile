@@ -18,14 +18,18 @@ group :assets do
   gem 'sass-rails'
   gem 'coffee-rails'
   gem 'uglifier', '>= 1.0.3'
+  gem "jquery-rails"
 
 end
 
 group :development do
 	gem 'webrat'
-	gem 'rspec-rails','2.14.0'
+	gem 'rspec-rails'
+	gem 'ZenTest'
+    	gem 'autotest-growl'
+    	gem 'autotest-fsevent'
  	gem 'annotate'
-  gem 'faker'
+	gem 'faker'
 end
 
 group :test do

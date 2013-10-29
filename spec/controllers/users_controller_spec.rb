@@ -377,4 +377,19 @@ describe UsersController do
     end
   end
 
+  describe "Content" do
+    describe "Microsposts" do
+      before(:each) do
+        @user = test_sign_in(FactoryGirl.create(:user))
+        @mp1  = FactoryGirl.create(:micropost, :user => @user, :created_at => 1.day.ago)
+      end
+
+      it "should have a delete link" do
+        get :show, :id => @user
+        response.should have_selector('a', :href => "/microposts/#{@mp1.id}",
+                                      :content => "Delete")
+      end
+    end
+  end
+
 end
