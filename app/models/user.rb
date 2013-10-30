@@ -18,6 +18,16 @@ class User < ActiveRecord::Base
   email_regex = /\A[\w\+\-.]+@([\da-zA-Z\-.])*[\.]([a-zA-Z\..])+\z/i
 
   has_many :microposts, :dependent => :destroy
+  has_many :relationships,  :dependent => :destroy,
+                            :foreign_key => "follower_id"
+  has_many :following, :through => :relationships,
+                       :source => :followed
+
+  has_many :rev_relationships, :dependent => :destroy,
+                               :foreign_key => "followed_id",
+                               :class_name => "Relationship"
+  has_many :followers, :through => :rev_relationships,
+                       :source => :follower
 
   validates :name,  :presence => true,
             :length => { :maximum => 50 }
@@ -38,6 +48,19 @@ class User < ActiveRecord::Base
 
   def feed
     Micropost.where("user_id = ?", id)
+  end
+
+  def following?(followed)
+    relationships.find_by_followed_id(followed)
+  end
+
+  def follow!(followed)
+    relationships.create!(:followed_id => followed.id)
+  end
+
+  def unfollow!(followed)
+    followed_user = relationships.find_by_followed_id(followed.id)
+    followed_user.destroy
   end
 
   def User.authenticate(email, password)
